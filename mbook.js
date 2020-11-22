@@ -43,6 +43,7 @@ async function processData(data){
 					key: key,
 					san: san,
 					score: parseFloat(score),
+					plays: 1,
 					gameids: [gameid]
 				}
 			
@@ -66,8 +67,9 @@ async function processData(data){
 						result.gameids.push(gameid)
 						let newScore = (result.score || 0.0) + parseFloat(score)
 						result.score = newScore
+						result.plays++
 						
-						console.log("updating score", index, newScore)
+						console.log("updating score", index, newScore, result.plays)
 						
 						poscoll.updateOne({key: key, san: san}, {$set: result}, {upsert: true})
 					}
@@ -124,6 +126,8 @@ function stream(){
 	if(drop) return
 	
 	console.log("streaming")
+	
+	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
 		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=15`,
