@@ -27,6 +27,10 @@ function streamNdjson(props){
         headers: headers
     })
     .then(response => {
+		response.body.on('end', _ => {
+			if(props.endcallback) props.endcallback()
+		})
+		
         response.body.on('data', chunk => {                      
             lastTick = new Date().getTime()
 

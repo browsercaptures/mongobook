@@ -39,6 +39,11 @@ function stream(){
 			console.log(`processing game ${game.id}`)
 
 			pytp.stdin.write(JSON.stringify(game) + "\n")
+		},
+		endcallback:_ => {
+			console.log("end")
+			
+			pytp.stdin.write("end\n")
 		}
 	})
 }
