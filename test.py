@@ -2,6 +2,7 @@ import fileinput
 import json
 import chess
 import chess.variant
+import time
 
 print("init", flush=True)
 
@@ -31,5 +32,6 @@ for line in fileinput.input():
                 fenBeforeMove = variantBoard.fen()
                 variantBoard.push_san(san)
                 print("bookmove", san, gameid, result, fenBeforeMove, flush=True)
+            time.sleep(3)
         else:
             print("nomoves", flush=True)
