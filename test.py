@@ -1,5 +1,11 @@
-import chess
+import fileinput
 
-board = chess.Board()
+print("init", flush=True)
 
-print(board.legal_moves)
+
+for line in fileinput.input():
+    line = line.rstrip()
+    if line == "start":
+        print("started", flush=True)
+    else:
+        print("got", line, flush=True)
