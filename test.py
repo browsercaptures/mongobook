@@ -29,6 +29,6 @@ for line in fileinput.input():
             for san in blob["moves"].split(" ")[:10]:
                 fenBeforeMove = variantBoard.fen()
                 variantBoard.push_san(san)
-                print(san, result, fenBeforeMove, flush=True)
+                print("bookmove", san, result, fenBeforeMove, flush=True)
         else:
             print("nomoves", flush=True)

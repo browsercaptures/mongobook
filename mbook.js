@@ -57,12 +57,18 @@ pytp.stderr.on('data', (data) => {
 pytp.stdout.on("data", data => {	
 	let line = data.toString().replace(/\s+$/, "")
 	
-	console.log(line)
+	let m
 	
 	if(line == "started"){
 		console.log("started")
 		
 		stream()
+	}else{
+		if(m = line.match(/^bookmove (.*)/)){
+			let [san, result, fen] = m[1].split(" ")
+			
+			console.log(san, result, fen)
+		}
 	}
 })
 
