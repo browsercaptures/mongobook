@@ -24,7 +24,8 @@
     "url": "https://github.com/browsercaptures/mongobook.git"
   },
   "dependencies": {
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {}
 }
