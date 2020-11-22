@@ -36,6 +36,6 @@ for line in fileinput.input():
                 uci = move.uci()
                 variantBoard.push(move)
                 print("bookmove", uci, san, gameid, result, fenBeforeMove, flush=True)
-            time.sleep(0.5)
+            time.sleep(1)
         else:
             print("nomoves", flush=True)
