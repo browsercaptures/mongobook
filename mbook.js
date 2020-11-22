@@ -32,7 +32,7 @@ async function processData(data){
 			
 			let index = i++
 
-			console.log("adding", index, san, result, "key", key)
+			//console.log("adding", index, "san", san, "score", score, "key", key)
 			
 			result = await poscoll.findOne({
 				key: key,
@@ -42,7 +42,7 @@ async function processData(data){
 			let doc = {
 					key: key,
 					san: san,
-					score: score,
+					score: parseFloat(score),
 					gameids: [gameid]
 				}
 			
@@ -56,19 +56,20 @@ async function processData(data){
 				if(!result.gameids){
 					result.gameids = [gameid]
 					
-					console.log("adding gameids")
+					//console.log("adding gameids")
 					
 					poscoll.updateOne({key: key, san: san}, {$set: doc}, {upsert: true})
 				}else{
 					if(result.gameids.includes(gameid)){
-						console.log("result", index, "has gameid")
+						//console.log("result", index, "has gameid", "score", result.score)
 					}else{
 						result.gameids.push(gameid)
-						result.score = (result.score || 0) + score
+						let newScore = (result.score || 0.0) + parseFloat(score)
+						result.score = newScore
 						
-						console.log("updating score")
+						console.log("updating score", index, newScore)
 						
-						poscoll.updateOne({key: key, san: san}, {$set: doc}, {upsert: true})
+						poscoll.updateOne({key: key, san: san}, {$set: result}, {upsert: true})
 					}
 				}
 			}
@@ -98,6 +99,8 @@ const BOT_NAME = process.env.BOT_NAME || "chesshyperbot"
 const BOT_TOKEN = process.env.BOT_TOKEN
 
 const BOOK_DEPTH = parseInt(process.env.BOOK_DEPTH || "5")
+
+const drop = false
  
 MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, setClient) {  
 	if(err){
@@ -111,15 +114,19 @@ MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: tru
 		
 		poscoll = bookdb.collection("positions")
 		
+		if(drop) poscoll.drop()
+		
 		pytp.stdin.write("start\n")
 	}
 })
 
 function stream(){
+	if(drop) return
+	
 	console.log("streaming")
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=10`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=15`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`processing game ${game.id}`)
