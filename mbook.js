@@ -119,7 +119,7 @@ function stream(){
 	console.log("streaming")
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=1`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=10`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`processing game ${game.id}`)
