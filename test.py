@@ -14,6 +14,7 @@ for line in fileinput.input():
     else:
         blob = json.loads(line)
         variant = blob["variant"]
+        gameid = blob["id"]
         if variant == "chess960":
             variantBoard = chess.Board(chess960=True, fen=blob["initialFen"])
         elif variant == "standard":
@@ -29,6 +30,6 @@ for line in fileinput.input():
             for san in blob["moves"].split(" ")[:10]:
                 fenBeforeMove = variantBoard.fen()
                 variantBoard.push_san(san)
-                print("bookmove", san, result, fenBeforeMove, flush=True)
+                print("bookmove", gameid, san, result, fenBeforeMove, flush=True)
         else:
             print("nomoves", flush=True)
