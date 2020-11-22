@@ -131,7 +131,7 @@ function stream(){
 	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=100`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=200`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`processing game ${game.id}`)
