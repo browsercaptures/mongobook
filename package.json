@@ -1,0 +1,28 @@
+{
+  "name": "@browsercaptures/mongobook",
+  "version": "1.0.0",
+  "description": "mongobook",
+  "main": "packages/mongobook/lib/mongobook.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "mongobook": "packages/mongobook/lib/mongobook.js"
+  },
+  "keywords": [
+    "mongobook"
+  ],
+  "author": "browsercaptures",
+  "license": "MIT",
+  "homepage": "https://github.com/browsercaptures/mongobook",
+  "bugs": {
+    "url": "https://github.com/browsercaptures/mongobook/issues",
+    "email": "browsercaptures@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/browsercaptures/mongobook.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
