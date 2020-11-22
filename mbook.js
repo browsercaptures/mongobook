@@ -33,7 +33,7 @@ function stream(){
 	console.log("streaming")
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=10`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=20`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`processing game ${game.id}`)
@@ -51,8 +51,8 @@ function stream(){
 pytp.stdin.write("start\n")
 
 pytp.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
+  console.error(`stderr: ${data}`)
+})
 
 pytp.stdout.on("data", data => {	
 	let line = data.toString().replace(/\s+$/, "")
