@@ -2,6 +2,32 @@ const { spawn } = require('child_process')
 
 const pytp = spawn("bash", ["python.sh", "test.py"])
 
+pytp.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`)
+})
+
+pytp.stdout.on("data", data => {	
+	let line = data.toString().replace(/\s+$/, "")
+	
+	let m
+	
+	if(line == "started"){
+		console.log("started")
+		
+		stream()
+	}else{
+		if(m = line.match(/^bookmove (.*)/)){			
+			let [san, result, fen1, fen2, fen3, fen4] = m[1].split(" ")
+			
+			let key = `${fen1} ${fen2} ${fen3} ${fen4}`
+
+			console.log("adding", san, result, "key", key)
+		}
+	}
+})
+
+pytp.on("close", _ => console.log("done"))
+
 const fs = require('fs')
 
 const MongoClient = require('mongodb').MongoClient
@@ -16,18 +42,20 @@ const BOT_NAME = process.env.BOT_NAME || "chesshyperbot"
 const BOT_TOKEN = process.env.BOT_TOKEN
 
 const BOOK_DEPTH = parseInt(process.env.BOOK_DEPTH || "5")
+
+let client
  
-/*MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {  
+MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, setClient) {  
 	if(err){
 		console.log("MongoDb connection failed.")
 	}else{
 		console.log("MongoDb connected.")
 		
-		const db = client.db(dbName)
- 
-  		client.close()
+		client = setClient
+		
+		pytp.stdin.write("start\n")
 	}
-})*/
+})
 
 function stream(){
 	console.log("streaming")
@@ -44,32 +72,8 @@ function stream(){
 			console.log("end")
 			
 			pytp.stdin.write("end\n")
+			
+			client.close()
 		}
 	})
 }
-
-pytp.stdin.write("start\n")
-
-pytp.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`)
-})
-
-pytp.stdout.on("data", data => {	
-	let line = data.toString().replace(/\s+$/, "")
-	
-	let m
-	
-	if(line == "started"){
-		console.log("started")
-		
-		stream()
-	}else{
-		if(m = line.match(/^bookmove (.*)/)){
-			let [san, result, fen] = m[1].split(" ")
-			
-			console.log(san, result, fen)
-		}
-	}
-})
-
-pytp.on("close", _ => console.log("done"))
