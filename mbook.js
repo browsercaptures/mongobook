@@ -26,7 +26,7 @@ async function processData(data){
 	}else{
 		if(m = line.match(/^bookmove (.*)/)){						
 			
-			let [uci, san, gameid, score, fen1, fen2, fen3, fen4] = m[1].split(" ")
+			let [variant, uci, san, gameid, score, fen1, fen2, fen3, fen4] = m[1].split(" ")
 			
 			let key = `${fen1} ${fen2} ${fen3} ${fen4}`
 			
@@ -35,11 +35,13 @@ async function processData(data){
 			//console.log("adding", index, "san", san, "score", score, "key", key)
 			
 			result = await poscoll.findOne({
+				variant: variant,
 				key: key,
 				uci: uci
 			})
 			
 			let doc = {
+				variant: variant,
 				key: key,
 				uci: uci,
 				san: san,
@@ -60,7 +62,7 @@ async function processData(data){
 					
 					//console.log("adding gameids")
 					
-					poscoll.updateOne({key: key, uci: uci}, {$set: doc}, {upsert: true})
+					poscoll.updateOne({variant: variant, key: key, uci: uci}, {$set: doc}, {upsert: true})
 				}else{
 					if(result.gameids.includes(gameid)){
 						//console.log("result", index, "has gameid", "score", result.score)
@@ -72,7 +74,7 @@ async function processData(data){
 						
 						console.log("updating score", index, newScore, result.plays)
 						
-						poscoll.updateOne({key: key, uci: uci}, {$set: result}, {upsert: true})
+						poscoll.updateOne({variant: variant, key: key, uci: uci}, {$set: result}, {upsert: true})
 					}
 				}
 			}

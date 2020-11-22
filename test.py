@@ -15,6 +15,7 @@ for line in fileinput.input():
     else:
         blob = json.loads(line)
         variant = blob["variant"]
+        origvariant = variant
         if variant == "kingOfTheHill":
             variant = "KOTH"
         gameid = blob["id"]
@@ -35,7 +36,7 @@ for line in fileinput.input():
                 move = variantBoard.parse_san(san)
                 uci = move.uci()
                 variantBoard.push(move)
-                print("bookmove", uci, san, gameid, result, fenBeforeMove, flush=True)
+                print("bookmove", origvariant, uci, san, gameid, result, fenBeforeMove, flush=True)
             time.sleep(1)
         else:
             print("nomoves", flush=True)
