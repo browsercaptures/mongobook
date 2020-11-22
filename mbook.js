@@ -26,7 +26,7 @@ async function processData(data){
 	}else{
 		if(m = line.match(/^bookmove (.*)/)){						
 			
-			let [san, gameid, score, fen1, fen2, fen3, fen4] = m[1].split(" ")
+			let [uci, san, gameid, score, fen1, fen2, fen3, fen4] = m[1].split(" ")
 			
 			let key = `${fen1} ${fen2} ${fen3} ${fen4}`
 			
@@ -36,16 +36,17 @@ async function processData(data){
 			
 			result = await poscoll.findOne({
 				key: key,
-				san: san
+				uci: uci
 			})
 			
 			let doc = {
-					key: key,
-					san: san,
-					score: parseFloat(score),
-					plays: 1,
-					gameids: [gameid]
-				}
+				key: key,
+				uci: uci,
+				san: san,
+				score: parseFloat(score),
+				plays: 1,
+				gameids: [gameid]
+			}
 			
 			if(!result){
 				console.log("inserting", doc)
@@ -59,7 +60,7 @@ async function processData(data){
 					
 					//console.log("adding gameids")
 					
-					poscoll.updateOne({key: key, san: san}, {$set: doc}, {upsert: true})
+					poscoll.updateOne({key: key, uci: uci}, {$set: doc}, {upsert: true})
 				}else{
 					if(result.gameids.includes(gameid)){
 						//console.log("result", index, "has gameid", "score", result.score)
@@ -71,7 +72,7 @@ async function processData(data){
 						
 						console.log("updating score", index, newScore, result.plays)
 						
-						poscoll.updateOne({key: key, san: san}, {$set: result}, {upsert: true})
+						poscoll.updateOne({key: key, uci: uci}, {$set: result}, {upsert: true})
 					}
 				}
 			}
@@ -130,7 +131,7 @@ function stream(){
 	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=500`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=100`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`processing game ${game.id}`)

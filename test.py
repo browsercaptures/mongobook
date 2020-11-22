@@ -32,8 +32,10 @@ for line in fileinput.input():
                 result = 1 if blob["winner"] == "white" else 0
             for san in blob["moves"].split(" ")[:40]:
                 fenBeforeMove = variantBoard.fen()
-                variantBoard.push_san(san)
-                print("bookmove", san, gameid, result, fenBeforeMove, flush=True)
+                move = chess.Move.from_san(san)
+                uci = move.uci()
+                variantBoard.push(move)
+                print("bookmove", uci, san, gameid, result, fenBeforeMove, flush=True)
             time.sleep(3)
         else:
             print("nomoves", flush=True)
