@@ -23,7 +23,7 @@ const dbName = 'games'
 const { streamNdjson } = require('./fetchutils.js')
 
 const BOT_NAME = process.env.BOT_NAME || "chesshyperbot"
-const BOT_TOKEN = process.env.BOT_TOKEN
+const BOT_TOKEN = process.env.TOKEN
 
 const BOOK_DEPTH = parseInt(process.env.BOOK_DEPTH || "40")
 
@@ -156,7 +156,7 @@ function stream(){
 	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=5`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=2500`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`adding game ${game.id}`)
