@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@easychessanimations/scalachess@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@easychessanimations/scalachess/-/scalachess-1.0.8.tgz#5ba93dcd67b01278f78460bbc8e72509869706f3"
+  integrity sha512-sOQuPuSCEAPg8TWM6U1NjJL5VCxYpUy0Sa3PzQUJmZz5b4a5hR4WjiJktxuZg3AO6vBjZp5OP/FK7EScZLiZNQ==
+
 bl@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/bl/-/bl-2.2.1.tgz#8c11a7b730655c5d56898cdc871224f40fd901d5"
