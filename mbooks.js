@@ -104,10 +104,6 @@ async function processGame(game, resolve){
 				console.log("inserting", doc)
 
 				await poscoll.insertOne(doc)
-				
-				resolve(true)
-				
-				return
 			}else{
 				//console.log("result", index, result)	
 
@@ -117,10 +113,6 @@ async function processGame(game, resolve){
 					console.log("adding gameids")
 
 					poscoll.updateOne({variant: variant, key: key, uci: uci}, {$set: doc}, {upsert: true})
-					
-					resolve(true)
-					
-					return
 				}else{
 					if(result.gameids.includes(gameid)){
 						console.log("has gameid")
@@ -133,10 +125,6 @@ async function processGame(game, resolve){
 						console.log("updating score", index, newScore, result.plays)
 
 						poscoll.updateOne({variant: variant, key: key, uci: uci}, {$set: result}, {upsert: true})
-						
-						resolve(true)
-						
-						return
 					}
 				}
 			}
@@ -145,7 +133,7 @@ async function processGame(game, resolve){
 		console.log(`game ${game.id} has no moves`)
 	}
 	
-	resolve(false)
+	resolve(true)
 }
 
 let allgames = []
@@ -168,7 +156,7 @@ function stream(){
 	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=2500`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=5`,
 		token: BOT_TOKEN,
 		callback: game => {
 			console.log(`adding game ${game.id}`)
