@@ -1,3 +1,5 @@
+const MAX_GAMES = 2500
+
 const { makeSanMovesScala } = require('@easychessanimations/scalachess/lib/outopt.js')
 
 let client
@@ -146,6 +148,8 @@ async function processGames(games){
 	client.close()
 }
 
+let r = 0
+
 function stream(){
 	if(drop){		
 		return
@@ -156,10 +160,10 @@ function stream(){
 	//poscoll.find({key: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"}).toArray().then(result => console.log(result)); return
 	
 	streamNdjson({
-		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=2500`,
+		url: `https://lichess.org/api/games/user/${BOT_NAME}?max=${MAX_GAMES}`,
 		token: BOT_TOKEN,
 		callback: game => {
-			console.log(`adding game ${game.id}`)
+			console.log(`${r++} of ${MAX_GAMES} adding game ${game.id}`)
 
 			allgames.push(game)
 		},
